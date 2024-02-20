@@ -36,6 +36,10 @@ states_config <- readr::read_csv(file.path(config$file_path$configuration_direct
 print("HERE3")
 #Download and process observations (already done)
 
+print(config$s3$drivers$endpoint)
+print(config$s3$drivers$bucket)
+
+
 met_out <- FLAREr::generate_met_files_arrow(obs_met_file = NULL,
                                             out_dir = config$file_path$execute_directory,
                                             start_datetime = config$run_config$start_datetime,
