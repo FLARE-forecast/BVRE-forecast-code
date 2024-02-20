@@ -7,7 +7,9 @@ configure_run_file <<- "configure_run.yml"
 update_run_config <<- TRUE
 config_set_name <<- "default"
 
-Sys.setenv("USE_HTTPS" = TRUE)
+Sys.setenv("AWS_DEFAULT_REGION" = "renc",
+           "AWS_S3_ENDPOINT" = "osn.xsede.org",
+           "USE_HTTPS" = TRUE)
 
 FLAREr::ignore_sigpipe()
 
