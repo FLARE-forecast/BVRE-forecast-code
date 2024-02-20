@@ -11,7 +11,7 @@ Sys.setenv("AWS_DEFAULT_REGION" = "renc",
            "AWS_S3_ENDPOINT" = "osn.xsede.org",
            "USE_HTTPS" = TRUE)
 
-
+Sys.getenv()
 lake_directory <- here::here()
 update_run_config <- TRUE
 files.sources <- list.files(file.path(lake_directory, "R"), full.names = TRUE)
@@ -21,6 +21,8 @@ sapply(files.sources, source)
 configure_run_file <- "configure_run.yml"
 
 config <- FLAREr::set_configuration(configure_run_file,lake_directory, config_set_name = config_set_name)
+
+Sys.getenv()
 
 config <- FLAREr::get_restart_file(config, lake_directory)
 
