@@ -62,7 +62,11 @@ print("HERE3")
 
 states_config <- FLAREr::generate_states_to_obs_mapping(states_config, obs_config)
 
+print("HERE4")
+
 model_sd <- FLAREr::initiate_model_error(config, states_config)
+
+print("HERE5")
 
 init <- FLAREr::generate_initial_conditions(states_config,
                                             obs_config,
@@ -70,8 +74,9 @@ init <- FLAREr::generate_initial_conditions(states_config,
                                             obs,
                                             config,
                                             historical_met_error = met_out$historical_met_error)
+
+print("HERE6")
 #Run EnKF
-print("HERE4")
 da_forecast_output <- FLAREr::run_da_forecast(states_init = init$states,
                                               pars_init = init$pars,
                                               aux_states_init = init$aux_states_init,
