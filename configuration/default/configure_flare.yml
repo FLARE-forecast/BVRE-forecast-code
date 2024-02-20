@@ -7,23 +7,23 @@ file_path:
    forecast_output_directory: .na
 s3:
   drivers:
-    endpoint: s3.flare-forecast.org
-    bucket: drivers/noaa/gefs-v12-reprocess
+    endpoint: renc.osn.xsede.org
+    bucket: bio230121-bucket01/vt_backup/drivers/noaa/gefs-v12-reprocess
   targets:
-    endpoint: s3.flare-forecast.org
-    bucket: targets/bvre_v2
+    endpoint: renc.osn.xsede.org
+    bucket: bio230121-bucket01/vt_backup/targets/bvre_v2
   forecasts:
-    endpoint: s3.flare-forecast.org
-    bucket: forecasts/bvre_v2
+    endpoint: renc.osn.xsede.org
+    bucket: bio230121-bucket01/vt_backup/forecasts/bvre_v2
   forecasts_parquet:
-    endpoint: s3.flare-forecast.org
-    bucket: forecasts/parquet
+    endpoint: renc.osn.xsede.org
+    bucket: bio230121-bucket01/vt_backup/forecasts/parquet
   warm_start:
-    endpoint: s3.flare-forecast.org
-    bucket: restart/bvre_v2
+    endpoint: renc.osn.xsede.org
+    bucket: bio230121-bucket01/vt_backup/restart/bvre_v2
   scores:
-    endpoint: s3.flare-forecast.org
-    bucket: scores/parquet
+    endpoint: renc.osn.xsede.org
+    bucket: bio230121-bucket01/vt_backup/scores/parquet
 location:
    site_id: bvre
    name: Beaverdam Reservoir
