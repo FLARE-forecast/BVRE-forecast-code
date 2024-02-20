@@ -7,6 +7,8 @@ configure_run_file <<- "configure_run.yml"
 update_run_config <<- TRUE
 config_set_name <<- "default"
 
+Sys.setenv("USE_HTTPS" = TRUE)
+
 FLAREr::ignore_sigpipe()
 
 noaa_ready <- TRUE
