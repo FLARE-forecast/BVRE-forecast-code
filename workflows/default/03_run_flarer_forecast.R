@@ -71,6 +71,7 @@ init <- FLAREr::generate_initial_conditions(states_config,
                                             config,
                                             historical_met_error = met_out$historical_met_error)
 #Run EnKF
+print("HERE4")
 da_forecast_output <- FLAREr::run_da_forecast(states_init = init$states,
                                               pars_init = init$pars,
                                               aux_states_init = init$aux_states_init,
