@@ -7,11 +7,12 @@ if(file.exists("~/.aws")){
                 "Consider renaming these so that automated upload will work"))
 }
 
+
 Sys.setenv("AWS_DEFAULT_REGION" = "renc",
            "AWS_S3_ENDPOINT" = "osn.xsede.org",
            "USE_HTTPS" = TRUE)
 
-Sys.getenv()
+print("HERE1")
 lake_directory <- here::here()
 update_run_config <- TRUE
 files.sources <- list.files(file.path(lake_directory, "R"), full.names = TRUE)
@@ -22,7 +23,7 @@ configure_run_file <- "configure_run.yml"
 
 config <- FLAREr::set_configuration(configure_run_file,lake_directory, config_set_name = config_set_name)
 
-Sys.getenv()
+print("HERE2")
 
 config <- FLAREr::get_restart_file(config, lake_directory)
 
@@ -32,7 +33,7 @@ pars_config <- readr::read_csv(file.path(config$file_path$configuration_director
 obs_config <- readr::read_csv(file.path(config$file_path$configuration_directory, config$model_settings$obs_config_file), col_types = readr::cols())
 states_config <- readr::read_csv(file.path(config$file_path$configuration_directory, config$model_settings$states_config_file), col_types = readr::cols())
 
-
+print("HERE3")
 #Download and process observations (already done)
 
 met_out <- FLAREr::generate_met_files_arrow(obs_met_file = NULL,
@@ -49,11 +50,15 @@ met_out <- FLAREr::generate_met_files_arrow(obs_met_file = NULL,
                                             use_forecast = TRUE,
                                             use_ler_vars = FALSE)
 
+print("HERE3")
+
 met_out$filenames <- met_out$filenames[!stringr::str_detect(met_out$filenames, "31")]
 
 obs <- FLAREr::create_obs_matrix(cleaned_observations_file_long = file.path(config$file_path$qaqc_data_directory,paste0(config$location$site_id, "-targets-insitu.csv")),
                                  obs_config = obs_config,
                                  config)
+
+print("HERE3")
 
 states_config <- FLAREr::generate_states_to_obs_mapping(states_config, obs_config)
 
