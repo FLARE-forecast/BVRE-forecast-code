@@ -7,9 +7,9 @@ if(file.exists("~/.aws")){
                 "Consider renaming these so that automated upload will work"))
 }
 
-Sys.setenv("AWS_DEFAULT_REGION" = "renc",
-           "AWS_S3_ENDPOINT" = "osn.xsede.org",
-           "USE_HTTPS" = TRUE)
+#Sys.setenv("AWS_DEFAULT_REGION" = "renc",
+#           "AWS_S3_ENDPOINT" = "osn.xsede.org",
+#           "USE_HTTPS" = TRUE)
 
 
 lake_directory <- here::here()
