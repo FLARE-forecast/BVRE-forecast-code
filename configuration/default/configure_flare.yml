@@ -14,13 +14,13 @@ s3:
     bucket: bio230121-bucket01/flare/targets/bvre
   forecasts:
     endpoint: renc.osn.xsede.org
-    bucket: bio230121-bucket01/flare/forecasts/bvre
+    bucket: bio230121-bucket01/flare/forecasts/netcdf
   forecasts_parquet:
     endpoint: renc.osn.xsede.org
     bucket: bio230121-bucket01/flare/forecasts/parquet
   warm_start:
     endpoint: renc.osn.xsede.org
-    bucket: bio230121-bucket01/flare/restart/bvre
+    bucket: bio230121-bucket01/flare/restart
   scores:
     endpoint: renc.osn.xsede.org
     bucket: bio230121-bucket01/flare/scores/parquet
