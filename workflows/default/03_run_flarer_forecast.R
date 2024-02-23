@@ -12,7 +12,6 @@ Sys.setenv("AWS_DEFAULT_REGION" = "renc",
            "AWS_S3_ENDPOINT" = "osn.xsede.org",
            "USE_HTTPS" = TRUE)
 
-print("HERE1")
 lake_directory <- here::here()
 update_run_config <- TRUE
 files.sources <- list.files(file.path(lake_directory, "R"), full.names = TRUE)
@@ -23,8 +22,6 @@ configure_run_file <- "configure_run.yml"
 
 config <- FLAREr::set_configuration(configure_run_file,lake_directory, config_set_name = config_set_name)
 
-print("HERE2")
-
 config <- FLAREr::get_restart_file(config, lake_directory)
 
 FLAREr::get_targets(lake_directory, config)
@@ -32,13 +29,6 @@ FLAREr::get_targets(lake_directory, config)
 pars_config <- readr::read_csv(file.path(config$file_path$configuration_directory, config$model_settings$par_config_file), col_types = readr::cols())
 obs_config <- readr::read_csv(file.path(config$file_path$configuration_directory, config$model_settings$obs_config_file), col_types = readr::cols())
 states_config <- readr::read_csv(file.path(config$file_path$configuration_directory, config$model_settings$states_config_file), col_types = readr::cols())
-
-print("HERE3")
-#Download and process observations (already done)
-
-print(config$s3$drivers$endpoint)
-print(config$s3$drivers$bucket)
-
 
 met_out <- FLAREr::generate_met_files_arrow(obs_met_file = NULL,
                                             out_dir = config$file_path$execute_directory,
@@ -54,23 +44,13 @@ met_out <- FLAREr::generate_met_files_arrow(obs_met_file = NULL,
                                             use_forecast = TRUE,
                                             use_ler_vars = FALSE)
 
-print("HERE3")
-
-met_out$filenames <- met_out$filenames[!stringr::str_detect(met_out$filenames, "31")]
-
 obs <- FLAREr::create_obs_matrix(cleaned_observations_file_long = file.path(config$file_path$qaqc_data_directory,paste0(config$location$site_id, "-targets-insitu.csv")),
                                  obs_config = obs_config,
                                  config)
 
-print("HERE3")
-
 states_config <- FLAREr::generate_states_to_obs_mapping(states_config, obs_config)
 
-print("HERE4")
-
 model_sd <- FLAREr::initiate_model_error(config, states_config)
-
-print("HERE5")
 
 init <- FLAREr::generate_initial_conditions(states_config,
                                             obs_config,
@@ -79,7 +59,6 @@ init <- FLAREr::generate_initial_conditions(states_config,
                                             config,
                                             historical_met_error = met_out$historical_met_error)
 
-print("HERE6")
 #Run EnKF
 da_forecast_output <- FLAREr::run_da_forecast(states_init = init$states,
                                               pars_init = init$pars,
@@ -115,15 +94,14 @@ forecast_df <- FLAREr::write_forecast_arrow(da_forecast_output = da_forecast_out
 message("Writing arrow score")
 
 message("Grabbing last 16-days of forecasts")
-reference_datetime_format <- "%Y-%m-%d %H:%M:%S"
-past_days <- strftime(lubridate::as_datetime(forecast_df$reference_datetime[1]) - lubridate::days(config$run_config$forecast_horizon), tz = "UTC")
+past_days <- lubridate::as_date(forecast_df$reference_datetime[1]) - lubridate::days(config$run_config$forecast_horizon)
 
 vars <- FLAREr:::arrow_env_vars()
 s3 <- arrow::s3_bucket(bucket = config$s3$forecasts_parquet$bucket, endpoint_override = config$s3$forecasts_parquet$endpoint)
 past_forecasts <- arrow::open_dataset(s3) |>
   dplyr::filter(model_id == forecast_df$model_id[1],
                 site_id == forecast_df$site_id[1],
-                reference_datetime > past_days) |>
+                reference_date > past_days) |>
   dplyr::collect()
 FLAREr:::unset_arrow_vars(vars)
 
@@ -138,15 +116,6 @@ FLAREr::generate_forecast_score_arrow(targets_file = file.path(config$file_path$
                                       endpoint = config$s3$scores$endpoint,
                                       local_directory = file.path(lake_directory, "scores/parquet"),
                                       variable_types = c("state","parameter"))
-
-
-
-#Create EML Metadata
-#eml_file_name <- FLAREr::create_flare_metadata(file_name = saved_file,
-#                                               da_forecast_output = da_forecast_output)
-
-#Clean up temp files and large objects in memory
-#unlink(config$file_path$execute_directory, recursive = TRUE)
 
 FLAREr::put_forecast(saved_file, eml_file_name = NULL, config)
 
