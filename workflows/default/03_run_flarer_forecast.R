@@ -99,10 +99,12 @@ past_days <- lubridate::as_date(forecast_df$reference_datetime[1]) - lubridate::
 vars <- FLAREr:::arrow_env_vars()
 s3 <- arrow::s3_bucket(bucket = config$s3$forecasts_parquet$bucket, endpoint_override = config$s3$forecasts_parquet$endpoint)
 past_forecasts <- arrow::open_dataset(s3) |>
+  dplyr::mutate(reference_date = lubridate::as_date(reference_date))
   dplyr::filter(model_id == forecast_df$model_id[1],
                 site_id == forecast_df$site_id[1],
                 reference_date > past_days) |>
   dplyr::collect()
+
 FLAREr:::unset_arrow_vars(vars)
 
 message("Combining forecasts")
