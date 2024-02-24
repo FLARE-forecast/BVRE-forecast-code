@@ -12,8 +12,6 @@ source("R/temp_oxy_chla_qaqc.R")
 source("R/extract_secchi.R")
 source("R/run_edi_data_bind.R")
 
-files.sources <- list.files(file.path(lake_directory, "R"), full.names = TRUE)
-sapply(files.sources[grepl(".R$", files.sources)], source)
 
 Sys.setenv("AWS_DEFAULT_REGION" = "renc",
            "AWS_S3_ENDPOINT" = "osn.xsede.org",
