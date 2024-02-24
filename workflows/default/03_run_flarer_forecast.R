@@ -124,6 +124,6 @@ FLAREr::put_forecast(saved_file, eml_file_name = NULL, config)
 rm(da_forecast_output)
 gc()
 
-FLAREr::update_run_config(config, lake_directory, configure_run_file, saved_file, new_horizon = 16, day_advance = 1)
+FLAREr::update_run_config(config, lake_directory, configure_run_file, saved_file, new_horizon = 34, day_advance = 1)
 
 message(paste0("successfully generated flare forecats for: ", basename(saved_file)))
