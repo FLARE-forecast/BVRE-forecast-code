@@ -29,6 +29,7 @@ da_setup:
     ensemble_size: 256
     no_negative_states: TRUE
     assimilate_first_step: FALSE
+    obs_filename: bvre-targets-insitu.csv
 model_settings:
    ncore: 4
    model_name: glm #other is "null"

@@ -7,6 +7,11 @@ forecast_site <- "bvre"
 configure_run_file <- "configure_run.yml"
 config_set_name <- "default"
 
+source("R/in_situ_qaqc.R")
+source("R/temp_oxy_chla_qaqc.R")
+source("R/extract_secchi.R")
+source("R/run_edi_data_bind.R")
+
 files.sources <- list.files(file.path(lake_directory, "R"), full.names = TRUE)
 sapply(files.sources[grepl(".R$", files.sources)], source)
 
