@@ -84,6 +84,7 @@ inflow:
 met:
    use_forecasted_met: TRUE
    forecast_met_model: noaa/NOAAGEFS_1hr
+   forecast_lag_days: 1
 uncertainty:
    observation_uncertainty: TRUE
    process_uncertainty: TRUE
