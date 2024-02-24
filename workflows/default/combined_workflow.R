@@ -11,6 +11,7 @@ source("R/in_situ_qaqc.R")
 source("R/temp_oxy_chla_qaqc.R")
 source("R/extract_secchi.R")
 source("R/run_edi_data_bind.R")
+source("R/wq_realtime_edi_combine.R")
 
 
 Sys.setenv("AWS_DEFAULT_REGION" = "renc",
