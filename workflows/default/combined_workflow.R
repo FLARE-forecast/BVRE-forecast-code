@@ -20,46 +20,46 @@ Sys.setenv("AWS_DEFAULT_REGION" = "renc",
 
 FLAREr::ignore_sigpipe()
 
+message("Beginning generate targets")
+
+config_obs <- FLAREr::initialize_obs_processing(lake_directory, observation_yml = "observation_processing.yml", config_set_name = config_set_name)
+config <- FLAREr::set_configuration(configure_run_file,lake_directory, config_set_name = config_set_name)
+
+
+dir.create(file.path(lake_directory, "targets", config_obs$site_id), showWarnings = FALSE)
+
+FLAREr::get_git_repo(lake_directory,
+                     directory = config_obs$realtime_insitu_location,
+                     git_repo = "https://github.com/FLARE-forecast/BVRE-data.git")
+
+FLAREr::get_edi_file(edi_https = "https://pasta.lternet.edu/package/data/eml/edi/725/3/a9a7ff6fe8dc20f7a8f89447d4dc2038",
+                     file = config_obs$insitu_obs_fname[2],
+                     lake_directory)
+
+FLAREr::get_edi_file(edi_https = "https://pasta.lternet.edu/package/data/eml/edi/725/3/5927a50118644fa451badb3b84233bb7",
+                     file = config_obs$insitu_obs_fname[3],
+                     lake_directory)
+
+cleaned_insitu_file <- in_situ_qaqc(insitu_obs_fname = file.path(lake_directory,"data_raw", config_obs$insitu_obs_fname),
+                                    data_location = file.path(lake_directory,"data_raw"),
+                                    maintenance_file = file.path(lake_directory, "data_raw", config_obs$maintenance_file),
+                                    ctd_fname = NA,
+                                    nutrients_fname =  NA,
+                                    secchi_fname = NA,
+                                    cleaned_insitu_file = file.path(lake_directory,"targets", config_obs$site_id, paste0(config_obs$site_id,"-targets-insitu.csv")),
+                                    site_id = config_obs$site_id,
+                                    config = config_obs)
+
+FLAREr::put_targets(site_id = config_obs$site_id,
+                    cleaned_insitu_file,
+                    cleaned_met_file = NA,
+                    cleaned_inflow_file = NA,
+                    use_s3 = config$run_config$use_s3,
+                    config = config)
+
 noaa_ready <- TRUE
 
 while(noaa_ready){
-    
-  message("Beginning generate targets")
-
-  config_obs <- FLAREr::initialize_obs_processing(lake_directory, observation_yml = "observation_processing.yml", config_set_name = config_set_name)
-  config <- FLAREr::set_configuration(configure_run_file,lake_directory, config_set_name = config_set_name)
-  
-  
-  dir.create(file.path(lake_directory, "targets", config_obs$site_id), showWarnings = FALSE)
-
-  FLAREr::get_git_repo(lake_directory,
-                       directory = config_obs$realtime_insitu_location,
-                       git_repo = "https://github.com/FLARE-forecast/BVRE-data.git")
-  
-  FLAREr::get_edi_file(edi_https = "https://pasta.lternet.edu/package/data/eml/edi/725/3/a9a7ff6fe8dc20f7a8f89447d4dc2038",
-                       file = config_obs$insitu_obs_fname[2],
-                       lake_directory)
-  
-  FLAREr::get_edi_file(edi_https = "https://pasta.lternet.edu/package/data/eml/edi/725/3/5927a50118644fa451badb3b84233bb7",
-                       file = config_obs$insitu_obs_fname[3],
-                       lake_directory)
-  
-  cleaned_insitu_file <- in_situ_qaqc(insitu_obs_fname = file.path(lake_directory,"data_raw", config_obs$insitu_obs_fname),
-                                      data_location = file.path(lake_directory,"data_raw"),
-                                      maintenance_file = file.path(lake_directory, "data_raw", config_obs$maintenance_file),
-                                      ctd_fname = NA,
-                                      nutrients_fname =  NA,
-                                      secchi_fname = NA,
-                                      cleaned_insitu_file = file.path(lake_directory,"targets", config_obs$site_id, paste0(config_obs$site_id,"-targets-insitu.csv")),
-                                      site_id = config_obs$site_id,
-                                      config = config_obs)
-  
-  FLAREr::put_targets(site_id = config_obs$site_id,
-                      cleaned_insitu_file,
-                      cleaned_met_file = NA,
-                      cleaned_inflow_file = NA,
-                      use_s3 = config$run_config$use_s3,
-                      config = config)
   
   # Run FLARE
   output <- FLAREr::run_flare(lake_directory = lake_directory,
