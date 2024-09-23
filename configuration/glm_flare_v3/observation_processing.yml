@@ -1,0 +1,104 @@
+##########################
+# Lake information
+###########################
+
+site_id: bvre
+lake_name: Beaverdam Reservoir
+lake_latitude: 37.31276   #Degrees North
+lake_longitude: -79.81607  #Degrees West
+
+#Currently needed to be GMT so that it interfaces with the NOAA forecast
+#reference_tzone <<- "GMT"
+#Local time zone of the lake
+local_tzone: "EST"
+
+#sss_fname: manual-data/FCR_SSS_inflow_2013_2020.csv
+#specified_sss_inflow_file: .na #manual-data/FCR_SSS_inflow_2013_2019_20200701_allfractions_2DOCpools.csv
+#specified_sss_outflow_file: .na
+
+noaa_location: BVRE 
+
+met_raw_obs_fname:
+    - fcre-metstation-data/FCRmet.csv
+    - Met_final_2015_2021.csv
+#specified_metfile: .na #NA #paste0(manual_data_location, "/met_full_postQAQC.csv")
+
+downscaling_coeff: fcr2020.RData #debiased.coefficients.2018_07_12_2019_07_11.RData
+
+nldas: BVR_GLM_NLDAS_010113_123119_GMTadjusted.csv 
+
+#######################
+#### INFLOW AND OUTFLOW
+#######################
+
+#specified_inflow1: .na #manual-data/FCR_weir_inflow_2013_2019_20200624_allfractions_2poolsDOC.csv
+inflow_raw_file1: BVR_inflow_2014_2019_20200917_allfractions_2poolsDOC_withch4_nldasInflow.csv
+inflow_temp: Inflow_2013_2021.csv
+#specified_inflow2: .na #manual-data/FCR_wetland_inflow_2013_2019_20200713_allfractions_2DOCpools.csv
+#specified_outflow1: .na #manual-data/FCR_spillway_outflow_SUMMED_WeirWetland_2013_2019_20200615.csv
+
+#########################
+### Depth information
+#########################
+#Depths used in the EnKF
+#This are the depths that are saved between days
+#Init depth of lake
+lake_depth_init: 13  #not a modeled state
+
+depths_bins_top: [0.00, 0.50, 1.00,
+                  1.50, 2.00, 2.50, 3.00,
+                  3.50, 4.00, 4.50, 5.00,
+                  5.50, 6.00, 6.50, 7.00, 
+                  7.50, 8.00, 8.50, 9.00,
+                  9.50, 10.00, 10.50, 11.00,
+                  11.50, 12.00, 12.50, 13.00] #[1.00, 2.00,
+
+obs_config_file: field_gases.csv
+
+realtime_insitu_location: bvre-platform-data-qaqc
+realtime_met_station_location: fcre-metstation-data
+manual_data_location: BVR-GLM/inputs
+#realtime_inflow_data_location: diana-data
+
+specified_inflow1: BVR_inflow_2014_2019_20200917_allfractions_2poolsDOC_withch4_nldasInflow.csv
+specified_outflow1: BVR_spillway_outflow_2014_2019_20200917_nldasInflow.csv
+
+insitu_obs_fname: 
+    - bvre-platform-data-qaqc/bvre-waterquality_L1.csv
+    - BVR_platform_data_2020_2022.csv
+    - BVR_Depth_offsets_2020_2022.csv
+
+secchi_fname: Secchi_depth_2013_2021.csv
+ctd_fname: CTD_final_2013_2021.csv
+ch4_fname: field_gasses.csv
+nutrients_fname: chem.csv
+variable_obsevation_depths: FALSE
+exo_sensor_2_ctd_chla: [0, 1]  #c(-2.0430, 2.5314) #c(1.8795, 0.6662) 
+exo_sensor_2_ctd_do_1_5: [0, 1] #c(8.3670, 0.7152)
+do_sensor_2_ctd_do_6: [0, 1] #c(19.6254, 0.8636)
+do_sensor_2_ctd_do_13: [0, 1] #c(11.0971, 0.9156)
+ctd_2_exo_sensor_chla: [0, 1]  #c(-2.0430, 2.5314) #c(-1.582, 1.335)
+ctd_2_exo_sensor_do: [0, 1] #c(-10.770, 1.061)
+exo_sensor_2_grab_sample_fdom: [-38.95, 22.47]
+focal_depths: .na
+maintenance_file: bvre-platform-data-qaqc/BVR_maintenance_log.txt
+
+pull_from_git: TRUE
+
+target_variables:
+    - temperature
+    - oxygen
+
+
+averaging_period:
+    - "1 hour"
+    - "1 hour"
+    
+averaging_period_starting_hour: "00:00:00"
+
+measurement_methods: 
+    temperature:
+        - thermistor
+    oxygen:
+        - do_sensor
+        - exo_sensor

@@ -1,0 +1,125 @@
+&glm_setup
+   sim_name = 'BVR'
+   max_layers = 500
+   min_layer_vol = 0.025
+   min_layer_thick = 0.2
+   max_layer_thick = 0.8
+   non_avg = .true.
+/
+&light
+   light_mode = 0
+   n_bands = 4
+   light_extc = 1, 0.5, 2, 4
+   energy_frac = 0.51, 0.45, 0.035, 0.005
+   Benthic_Imin = 10
+   Kw = 0.87
+/
+&mixing
+   coef_mix_conv = 0.2
+   coef_wind_stir = 0.23
+   coef_mix_shear = 0.3
+   coef_mix_turb = 0.51
+   coef_mix_KH = 0.3
+   coef_mix_hyp = 0.6
+   deep_mixing = 2
+/
+&morphometry
+   lake_name = 'Beaverdam'
+   latitude = 37.31276
+   longitude = -79.81607
+   bsn_len = 855.03
+   bsn_wid = 109.46
+   bsn_vals = 46
+   restart_mixer_count = 0
+   H = 576, 576.3, 576.6, 576.9, 577.2, 577.5, 577.8, 578.1, 578.4, 578.7, 579, 579.3, 579.6, 579.9, 580.2, 580.5, 580.8, 581.1, 581.4, 581.7, 582, 582.3, 582.6, 582.9, 583.2, 583.5, 583.8, 584.1, 584.4, 584.7, 585, 585.3, 585.6, 585.9, 586.2, 586.5, 586.8, 587.1, 587.4, 587.7, 588, 588.3, 588.6, 588.9, 589.2, 589.5
+   A = 0, 2966.476185, 3417.098266, 3943.222265, 8201.749898, 9137.0109, 10083.516114, 18908.696911, 20482.728906, 21898.588973, 35930.572517, 38280.796164, 40097.32227, 42104.235133, 51641.882676, 53959.058794, 56286.074771, 69079.415225, 72100.143538, 74871.418261, 83344.954555, 87375.502914, 90634.540069, 94070.371758, 107069.609564, 111098.635433, 115222.000565, 132627.861799, 137640.432065, 142330.117536, 161556.612776, 167950.184421, 172986.777352, 178517.014158, 203272.260947, 210274.399692, 217393.481004, 273886.355781, 278581.881454, 282911.71991, 289953.276304, 293959.489369, 297845.964104, 301807.90306, 318261.911754, 323872.546042
+/
+&time
+   timefmt = 2
+   start = '2013-05-15 12:00'
+   stop = '2018-12-31 12:00'
+   dt = 3600
+   num_days = 1
+   timezone = -5
+/
+&output
+   out_dir = "./"
+   out_fn = "output"
+   nsave = 24
+/
+&init_profiles
+   num_heights = 27
+   lake_depth = 13
+   the_heights = 0.1, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11, 11.5, 12, 12.5, 13
+   the_temps = 4.8132, 4.791, 4.7799, 4.778633333, 4.778, 4.7667, 4.76105, 4.74285, 4.73375, 4.73785, 4.7399, 4.7353, 4.733, 4.730233333, 4.72885, 4.717416667, 4.7117, 4.713966667, 4.7151, 4.7057, 4.701, 4.700466667, 4.7002, 4.7002, 4.7002, 4.7002, 4.7002
+   the_sals = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+   num_wq_vars = 0
+   wq_names = ' '
+   snow_thickness = 0
+   white_ice_thickness = 0
+   blue_ice_thickness = 0
+   avg_surf_temp = 5
+   restart_variables = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+/
+&meteorology
+   met_sw = .true.
+   lw_type = 'LW_IN'
+   rain_sw = .false.
+   atm_stab = 0
+   catchrain = .false.
+   rad_mode = 1
+   albedo_mode = 1
+   cloud_mode = 4
+   meteo_fl = '/Users/quinn/Dropbox/Research/SSC_forecasting/glm_aed_forecasts/model_output_historical/FCR_GLM_NLDAS_010113_123119_GMTadjusted.csv'
+   subdaily = .true.
+   wind_factor = 1.0
+   sw_factor = 1.0 !0.5323544=dec 2021 avg
+   lw_factor = 1.0 !1.0241495=dec 2021 avg
+   at_factor = 1
+   rh_factor = 1
+   rain_factor = 1
+   cd = 0.0013
+   ce = 0.0013
+   ch = 0.0013
+   time_fmt = 'YYYY-MM-DD hh:mm:ss'
+/
+&inflow
+   num_inflows = 0
+   names_of_strms = 'combined_inflow'
+   subm_flag = .false.
+   strm_hf_angle = 55
+   strmbd_slope = 0.05
+   strmbd_drag = 0.03
+   inflow_factor = 1
+   inflow_fl = '/Users/heatherwander/Documents/VirginiaTech/research/BVR_GLM/BVRE-forecast/data_processed/BVR_inflow_2014_2019_20210223_allfractions_2poolsDOC_withch4_nldasInflow.csv'
+   inflow_varnum = 19
+   inflow_vars = 'FLOW','TEMP','SALT','OXY_oxy','NIT_amm','NIT_nit','PHS_frp','OGM_doc','OGM_docr','OGM_poc','OGM_don','OGM_donr','OGM_pon','OGM_dop','OGM_dopr','OGM_pop','CAR_dic','CAR_ch4','SIL_rsi'
+/
+&outflow
+   num_outlet = 0
+   flt_off_sw = .false.
+   outl_elvs = 585.7
+   bsn_len_outl = 855.03
+   bsn_wid_outl = 55.96
+   outflow_fl = '/Users/heatherwander/Documents/VirginiaTech/research/BVR_GLM/BVRE-forecast/data_processed/BVR_spillway_outflow_2014_2019_20210223_nldasInflow.csv'
+   outflow_factor = 1
+/
+&snowice
+   snow_albedo_factor = 0.8
+   snow_rho_max = 300
+   snow_rho_min = 50
+   min_ice_thickness = 0.001
+   dt_iceon_avg = 0.01
+   avg_surf_temp_thres = 0.5
+/
+&sediment
+   benthic_mode = 2
+   sed_heat_model = 1
+   n_zones = 2
+   zone_heights = 6.0, 15.0
+   sed_heat_Ksoil = 1.2, 1.2
+   sed_temp_depth = 0.5, 0.5
+   sed_temp_mean = 6.85118961409541, 8.55391440004643 !5.5360090, 11.1160685 = dec 2021 avg
+   sed_temp_amplitude = 0, 0
+   sed_temp_peak_doy = 256.374966392195, 275.567490968313
+/
