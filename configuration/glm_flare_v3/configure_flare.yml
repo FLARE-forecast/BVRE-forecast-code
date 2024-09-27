@@ -87,8 +87,8 @@ flows:
    use_ler_vars: no
    #use_forecasted_inflow: TRUE
 met:
-   future_met_model: 'gefs-v12/stage2'
-   historical_met_model: 'gefs-v12/stage3'
+   future_met_model: 'gefs-v12/stage2/reference_datetime={reference_date}/site_id={site_id}'
+   historical_met_model: 'gefs-v12/stage3/site_id={site_id}'
    historical_met_use_s3: TRUE
    future_met_use_s3: TRUE
    use_openmeteo: FALSE
