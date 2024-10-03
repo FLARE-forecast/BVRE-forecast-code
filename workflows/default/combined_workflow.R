@@ -57,9 +57,9 @@ FLAREr::put_targets(site_id = config_obs$site_id,
                     use_s3 = config$run_config$use_s3,
                     config = config)
 
-#noaa_ready <- TRUE
+noaa_ready <- TRUE
 
-#while(noaa_ready){
+while(noaa_ready){
   
   # Run FLARE
   output <- FLAREr::run_flare(lake_directory = lake_directory,
@@ -89,7 +89,7 @@ FLAREr::put_targets(site_id = config_obs$site_id,
     
   RCurl::url.exists("https://hc-ping.com/8b5c849d-a5a6-4d44-980c-676472cf3c70", timeout = 5)
   
-  #noaa_ready <- FLAREr::check_noaa_present_arrow(lake_directory,
-  #                                             configure_run_file,
-  #                                             config_set_name = config_set_name)
-#}
+  noaa_ready <- FLAREr::check_noaa_present_arrow(lake_directory,
+                                               configure_run_file,
+                                               config_set_name = config_set_name)
+}
