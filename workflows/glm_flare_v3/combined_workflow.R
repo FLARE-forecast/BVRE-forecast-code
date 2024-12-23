@@ -8,7 +8,7 @@ Sys.setenv('GLM_PATH'='GLM3r')
 
 lake_directory <- here::here()
 setwd(lake_directory)
-forecast_site <- "fcre"
+forecast_site <- "bvre"
 configure_run_file <- "configure_run.yml"
 config_set_name <- "glm_flare_v3"
 
@@ -75,6 +75,8 @@ while(noaa_ready){
                   reference_date == lubridate::as_datetime(config$run_config$forecast_start_datetime)) |>
     dplyr::collect()
   
+  print(paste0('LENGTH OF FORECAST OUTPUT: ', nrow(forecast_df)))
+  
   if(config$output_settings$evaluate_past & config$run_config$use_s3){
     #past_days <- lubridate::as_date(forecast_df$reference_datetime[1]) - lubridate::days(config$run_config$forecast_horizon)
     past_days <- lubridate::as_date(lubridate::as_date(config$run_config$forecast_start_datetime) - lubridate::days(config$run_config$forecast_horizon))
@@ -93,6 +95,9 @@ while(noaa_ready){
   }
   
   combined_forecasts <- dplyr::bind_rows(forecast_df, past_forecasts)
+  
+  combined_forecasts$site_id <- forecast_site
+  combined_forecasts$model_id <- config$run_config$sim_name
   
   targets_df <- read_csv(file.path(config$file_path$qaqc_data_directory,paste0(config$location$site_id, "-targets-insitu.csv")),show_col_types = FALSE)
   
