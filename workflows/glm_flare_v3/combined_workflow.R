@@ -1,7 +1,8 @@
 library(tidyverse)
 library(lubridate)
 
-remotes::install_github('flare-forecast/FLAREr@single-parameter')
+#remotes::install_github('flare-forecast/FLAREr@single-parameter')
+remotes::install_github('flare-forecast/FLAREr')
 remotes::install_github("rqthomas/GLM3r")
 Sys.setenv('GLM_PATH'='GLM3r')
 
@@ -27,15 +28,15 @@ message("Beginning generate targets")
 
 dir.create(file.path(lake_directory, "targets", config_obs$site_id), showWarnings = FALSE)
 
-FLAREr::get_git_repo(lake_directory,
+FLAREr:::get_git_repo(lake_directory,
                      directory = config_obs$realtime_insitu_location,
                      git_repo = "https://github.com/FLARE-forecast/BVRE-data.git")
 
-FLAREr::get_edi_file(edi_https = "https://pasta.lternet.edu/package/data/eml/edi/725/3/a9a7ff6fe8dc20f7a8f89447d4dc2038",
+get_edi_file(edi_https = "https://pasta.lternet.edu/package/data/eml/edi/725/3/a9a7ff6fe8dc20f7a8f89447d4dc2038",
                      file = config_obs$insitu_obs_fname[2],
                      lake_directory)
 
-FLAREr::get_edi_file(edi_https = "https://pasta.lternet.edu/package/data/eml/edi/725/3/5927a50118644fa451badb3b84233bb7",
+get_edi_file(edi_https = "https://pasta.lternet.edu/package/data/eml/edi/725/3/5927a50118644fa451badb3b84233bb7",
                      file = config_obs$insitu_obs_fname[3],
                      lake_directory)
 
@@ -49,7 +50,7 @@ cleaned_insitu_file <- in_situ_qaqc(insitu_obs_fname = file.path(lake_directory,
                                     site_id = config_obs$site_id,
                                     config = config_obs)
 
-FLAREr::put_targets(site_id = config_obs$site_id,
+FLAREr:::put_targets(site_id = config_obs$site_id,
                     cleaned_insitu_file,
                     cleaned_met_file = NA,
                     cleaned_inflow_file = NA,
@@ -123,6 +124,7 @@ while(noaa_ready){
                              bucket = config$s3$restart$bucket,
                              endpoint = config$s3$restart$endpoint,
                              use_https = TRUE)
+  
   RCurl::url.exists("https://hc-ping.com/8b5c849d-a5a6-4d44-980c-676472cf3c70", timeout = 5)
   
   noaa_ready <- FLAREr:::check_noaa_present_arrow(lake_directory,

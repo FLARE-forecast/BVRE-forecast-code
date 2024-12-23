@@ -36,7 +36,7 @@ da_setup:
     no_negative_states: TRUE
     assimilate_first_step: FALSE
     obs_filename: bvre-targets-insitu.csv
-    localization_distance: NA
+    localization_distance: .na
 model_settings:
    ncore: 4
    model_name: glm #other is "null"
@@ -116,4 +116,9 @@ output_settings:
    diagnostics_names:  [extc]
    evaluate_past: FALSE
    variables_in_scores: [state, parameter]
-   generate_plot: FALSE
+   generate_plots: FALSE
+   # diagnostics_daily:
+   #    names: ['Tot Inflow Vol', 'Tot Outflow Vol', 'Overflow Vol', 'temp']
+   #    save_names: ['inflow', 'outflow','overflow', 'temp_outflow']
+   #    file: ['lake.csv', 'lake.csv','lake.csv', 'outlet_00.csv']
+   #    depth: [NA, NA, NA, NA]
