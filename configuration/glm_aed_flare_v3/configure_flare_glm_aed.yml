@@ -1,0 +1,100 @@
+s3:
+  drivers:
+    endpoint: renc.osn.xsede.org
+    bucket: bio230121-bucket01/flare/drivers/met
+  inflow_drivers:
+    endpoint: renc.osn.xsede.org
+    bucket: bio230121-bucket01/flare/drivers/inflow/fcre/lm_ar
+  targets:
+    endpoint: renc.osn.xsede.org
+    bucket: bio230121-bucket01/flare/targets
+  forecasts:
+    endpoint: renc.osn.xsede.org
+    bucket: bio230121-bucket01/flare/forecasts/netcdf
+  forecasts_parquet:
+    endpoint: renc.osn.xsede.org
+    bucket: bio230121-bucket01/flare/forecasts/parquet
+  restart:
+    endpoint: renc.osn.xsede.org
+    bucket: bio230121-bucket01/flare/restart
+  scores:
+    endpoint: renc.osn.xsede.org
+    bucket: bio230121-bucket01/flare/scores/parquet
+location:
+   site_id: bvre
+   name: Beaverdam Reservoir
+   latitude: 37.307   #Degrees North
+   longitude: 79.81607  #Degrees West
+da_setup:
+    da_method: enkf
+    par_fit_method: perturb
+    ensemble_size:  221
+    localization_distance: .na #distance in meters were covariances in the model error are used
+    no_negative_states: TRUE
+    assimilate_first_step: FALSE
+    use_obs_constraint: TRUE
+    obs_filename: bvre-targets-insitu.csv
+model_settings:
+   ncore: 4
+   model_name: glm_aed
+   base_GLM_nml: glm3.nml
+   base_AED_nml: aed2.nml
+   base_AED_phyto_pars_nml: aed_phyto_pars.csv
+   base_AED_zoop_pars_nml: aed_zoop_pars.csv
+   max_model_layers: 100
+   modeled_depths: [0.00, 0.50, 1.00, 1.50,
+                    2.00, 2.50, 3.00, 3.50,
+                    4.00, 4.50, 5.00, 5.50,
+                    6.00, 6.50, 7.00, 7.50,
+                    8.00, 8.50, 9.00, 9.50,
+                    10.00, 11.00, 12.00, 13.00]
+   par_config_file: parameter_calibration_config_aed.csv
+   obs_config_file: observations_config_aed.csv
+   states_config_file: states_config_aed.csv
+   depth_model_sd_config_file: depth_model_sd_aed.csv
+default_init:
+   lake_depth: 13  #not a modeled state
+   temp: [4.8,4.8,4.78,4.76,4.73,4.73,4.73,4.73,4.71,4.71,4.7,4.7,4.7,4.7] #27,26,23,23,14,11,10,9,9,9,9,9
+   temp_depths: [0.1,1,2,3,4,5,6,7,8,9,10,11,12,13] 
+   salinity: 0.0
+   snow_thickness: 0.0
+   white_ice_thickness: 0.0
+   blue_ice_thickness: 0.0
+flows:
+   include_inflow: TRUE
+   include_outflow: TRUE
+   forecast_inflow_model: tmwb_inflow
+   historical_inflow_model: historic/model_id=tmwb_inflow/site_id={site_id}
+   future_inflow_model: future/model_id=tmwb_inflow/reference_date={reference_date}/site_id={site_id}
+   historical_outflow_model: historic/model_id=tmwb_inflow/site_id={site_id}
+   future_outflow_model: future/model_id=tmwb_inflow/reference_date={reference_date}/site_id={site_id}
+   local_inflow_directory: drivers/inflow
+   local_outflow_directory: drivers/inflow
+   use_flows_s3: no
+   use_ler_vars: no
+met:
+   future_met_model: 'gefs-v12/stage2/reference_datetime={reference_date}/site_id={site_id}'
+   historical_met_model: 'gefs-v12/stage3/site_id={site_id}'
+   historical_met_use_s3: TRUE
+   future_met_use_s3: TRUE
+   use_openmeteo: FALSE
+   local_met_directory: 'drivers'
+   use_forecasted_met: TRUE
+   use_ler_vars: FALSE
+   forecast_lag_days: 1
+uncertainty:
+   observation: TRUE
+   process: TRUE
+   weather: TRUE
+   initial_condition: TRUE
+   parameter: TRUE
+   inflow: TRUE
+output_settings:
+   diagnostics_names:  [extc]
+   generate_plots: FALSE
+   evaluate_past: FALSE
+   diagnostics_daily:
+     names: ['CAR_ch4_atm','CAR_atm_co2_flux', 'temp', 'OXY_oxy', 'temp', 'temp']
+     save_names: ['ch4_flux_mean', 'co2_flux_mean', 'temp_1.6m_mean', 'oxy_mean', 'temp_1.0m_mean', 'temp_13.0m_mean']
+     file: ['output.nc','output.nc', 'output.nc', 'output.nc', 'output.nc', 'output.nc']
+     depth: [.na, .na, 1.6, 1.6, 1.0, 13.0]
