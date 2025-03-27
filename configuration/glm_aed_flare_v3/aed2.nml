@@ -243,6 +243,6 @@
    pp_target_variable = 'OGM_pop'
    dc_target_variable = 'OGM_doc'
    pc_target_variable = 'OGM_poc'
-   dbase = 'aed_zoop_pars.csv'
+   dbase = 'aed2_zoop_pars.csv'
    simZoopFeedback = .true.
 /

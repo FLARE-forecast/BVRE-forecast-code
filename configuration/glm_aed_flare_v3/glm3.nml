@@ -6,6 +6,14 @@
    max_layer_thick = 0.8
    non_avg = .true.
 /
+&wq_setup
+   wq_lib = 'aed'
+   wq_nml_file = 'aed2.nml'
+   ode_method = 1
+   split_factor = 1
+   bioshade_feedback = .true.
+   repair_state = .true.
+/
 &light
    light_mode = 0
    n_bands = 4
@@ -116,11 +124,11 @@
 &sediment
    benthic_mode = 2
    sed_heat_model = 1
-   n_zones = 2
-   zone_heights = 6.0, 15.0
-   sed_heat_Ksoil = 1.2, 1.2
-   sed_temp_depth = 0.5, 0.5
-   sed_temp_mean = 6.85118961409541, 8.55391440004643 !5.5360090, 11.1160685 = dec 2021 avg
-   sed_temp_amplitude = 0, 0
-   sed_temp_peak_doy = 256.374966392195, 275.567490968313
+   n_zones = 4
+   zone_heights = 3, 6, 9, 12
+   sed_heat_Ksoil = 1.2, 1.2, 1.2, 1.2
+   sed_temp_depth = 0.05, 0.5, 0.5, 0.5
+   sed_temp_mean = 9, 12, 15, 20
+   sed_temp_amplitude = 1.2, 2, 10, 10
+   sed_temp_peak_doy = 300, 305, 220, 210
 /

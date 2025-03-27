@@ -40,7 +40,7 @@ model_settings:
    base_GLM_nml: glm3.nml
    base_AED_nml: aed2.nml
    base_AED_phyto_pars_nml: aed_phyto_pars.csv
-   base_AED_zoop_pars_nml: aed_zoop_pars.csv
+   base_AED_zoop_pars_nml: aed2_zoop_pars.csv
    max_model_layers: 100
    modeled_depths: [0.00, 0.50, 1.00, 1.50,
                     2.00, 2.50, 3.00, 3.50,
