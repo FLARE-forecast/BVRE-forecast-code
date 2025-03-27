@@ -66,9 +66,18 @@ variables <- c("datetime", "parameter","reference_datetime", "FLOW", "TEMP", "SA
                'OGM_dop',
                'OGM_dopr',
                'OGM_pop',
-               'PHY_cyano',
-               'PHY_green',
-               'PHY_diatom')
+               'PHY_cyano', 
+               'PHY_cyano_IN', 
+               'PHY_cyano_IP', 
+               'PHY_green', 
+               'PHY_green_IN', 
+               'PHY_green_IP', 
+               'PHY_diatom',
+               'PHY_diatom_IN', 
+               'PHY_diatom_IP', 
+               'ZOO_rotifer', 
+               'ZOO_cladoceran', 
+               'ZOO_copepod')
 
 inflow_converted <- inflow_prepare_combined |>
   #filter(!variable %in% c("DN_mgL_sample", "DC_mgL_sample")) |>
@@ -107,8 +116,17 @@ inflow_converted <- inflow_prepare_combined |>
                 SIL_rsi = DRSI_mgL_sample) |> #*1000*(1/60.08),
                 #SALT = 0) |>
   dplyr::mutate(PHY_cyano = 0,
-                PHY_green = 0,
+                PHY_cyano_IN = 0,
+                PHY_cyano_IP = 0,
+                PHY_green = 0, 
+                PHY_green_IN = 0, 
+                PHY_green_IP = 0, 
                 PHY_diatom = 0,
+                PHY_diatom_IN = 0, 
+                PHY_diatom_IP = 0, 
+                ZOO_rotifer = 0, 
+                ZOO_cladoceran = 0, 
+                ZOO_copepod = 0,
                 SALT = 0) |> 
   dplyr::mutate_if(is.numeric, round, 4) |>
   dplyr::select(dplyr::any_of(variables)) |>
