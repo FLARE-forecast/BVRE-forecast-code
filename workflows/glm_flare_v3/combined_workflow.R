@@ -60,6 +60,8 @@ FLAREr:::put_targets(site_id = config_obs$site_id,
 noaa_ready <- TRUE
 
 while(noaa_ready){
+
+  config <- FLAREr:::set_up_simulation(configure_run_file,lake_directory, config_set_name = config_set_name)         
   
   # Run FLARE
   output <- FLAREr:::run_flare(lake_directory = lake_directory,
