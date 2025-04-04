@@ -212,6 +212,8 @@ while(noaa_ready & inflow_ready){
     past_forecasts <- NULL
   }
   
+  source('./R/generate_forecast_score_arrow.R')
+  
   combined_forecasts <- dplyr::bind_rows(forecast_df, past_forecasts)
   
   targets_df <- read_csv(file.path(config$file_path$qaqc_data_directory,paste0(config$location$site_id, "-targets-insitu.csv")),show_col_types = FALSE)
