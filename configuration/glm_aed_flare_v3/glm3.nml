@@ -125,7 +125,7 @@
    benthic_mode = 2
    sed_heat_model = 1
    n_zones = 4
-   zone_heights = 3, 6, 9, 12
+   zone_heights = 4, 8, 10, 15
    sed_heat_Ksoil = 1.2, 1.2, 1.2, 1.2
    sed_temp_depth = 0.05, 0.5, 0.5, 0.5
    sed_temp_mean = 9, 12, 15, 20
