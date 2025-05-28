@@ -1,5 +1,8 @@
 library(tidyverse)
 library(lubridate)
+
+devtools::install_github('FLARE-forecast/FLAREr', ref = 'v3.0.3')
+
 set.seed(100)
 
 Sys.setenv('GLM_PATH'='GLM3r')
