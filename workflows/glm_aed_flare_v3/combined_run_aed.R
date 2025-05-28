@@ -1,7 +1,7 @@
 library(tidyverse)
 library(lubridate)
 
-devtools::install_github('FLARE-forecast/FLAREr', ref = 'v3.0.3')
+devtools::install_github('FLARE-forecast/FLAREr')
 
 set.seed(100)
 
