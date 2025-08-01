@@ -13,7 +13,7 @@ forecast_date <- config$run_config$forecast_start_datetime
 # inflow_hist_dates <- tibble(datetime = seq(min(targets_vera$datetime), max(targets_vera$datetime), by = "1 day"))
 
 
-inflow_s3 <- arrow::s3_bucket(bucket = glue::glue("bio230121-bucket01/vera4cast/forecasts/parquet/project_id=vera4cast/duration=P1D/"),
+inflow_s3 <- arrow::s3_bucket(bucket = glue::glue("bio230121-bucket01/vera4cast/forecasts/bundled-parquet/project_id=vera4cast/duration=P1D/"),
                        endpoint_override = "https://amnh1.osn.mghpcc.org",
                        anonymous = TRUE)
 
