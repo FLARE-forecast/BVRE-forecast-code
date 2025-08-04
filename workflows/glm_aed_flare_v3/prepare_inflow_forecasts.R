@@ -13,11 +13,14 @@ forecast_date <- config$run_config$forecast_start_datetime
 # inflow_hist_dates <- tibble(datetime = seq(min(targets_vera$datetime), max(targets_vera$datetime), by = "1 day"))
 
 
-inflow_s3 <- arrow::s3_bucket(bucket = glue::glue("bio230121-bucket01/vera4cast/forecasts/bundled-parquet/project_id=vera4cast/duration=P1D/"),
-                       endpoint_override = "https://amnh1.osn.mghpcc.org",
-                       anonymous = TRUE)
+# inflow_s3 <- arrow::s3_bucket(bucket = glue::glue("bio230121-bucket01/vera4cast/forecasts/bundled-parquet/project_id=vera4cast/duration=P1D/"),
+#                        endpoint_override = "https://amnh1.osn.mghpcc.org",
+#                        anonymous = TRUE)
 
-inflow_df <- arrow::open_dataset(inflow_s3) |> 
+inflow_df <- duckdbfs::open_dataset(paste0("s3://bio230121-bucket01/vera4cast/forecasts/bundled-parquet/project_id=vera4cast/duration=P1D/"),
+                                    s3_endpoint = "amnh1.osn.mghpcc.org",
+                                    anonymous = TRUE) |> 
+  #arrow::open_dataset(inflow_s3) |> 
   filter(model_id == 'tmwb_inflow',
          reference_date == reference_date) |> 
   collect()
@@ -45,6 +48,7 @@ prepare_future <- inflow_df |>
   #mutate(Temp_C_mean = imputeTS::na_interpolation(Temp_C_mean)) ## SOME FORECASTS HAVE ALL NEGATIVE EM VALUES -- INTERPOLATE NOW BUT INFLOW MODEL WILL NEED TO BE FIXED
 
 inflow_prepare_combined <- dplyr::bind_rows(prepare_historic, prepare_future) |> 
+  distinct() |> 
   pivot_wider(names_from = variable, values_from = prediction)
   
   
