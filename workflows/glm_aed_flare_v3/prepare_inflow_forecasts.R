@@ -148,12 +148,18 @@ inflow_converted <- inflow_prepare_combined |>
 
 
 inflow_future <- inflow_converted |> 
-  filter(datetime >= forecast_date) |> 
-  mutate(flow_type = 'inflow')
+  filter(datetime >= forecast_date, 
+         !is.na(prediction)) |> 
+  distinct(model_id, site_id, reference_datetime, family, datetime, parameter, variable, flow_number, .keep_all = TRUE) |> 
+  mutate(flow_type = 'inflow',
+         datetime = as.Date(datetime))
 
 outflow_future <- inflow_converted |> 
-  filter(datetime >= forecast_date) |> 
-  mutate(flow_type = 'outflow')
+  filter(datetime >= forecast_date,
+         !is.na(prediction)) |> 
+  distinct(model_id, site_id, reference_datetime, family, datetime, parameter, variable, flow_number, .keep_all = TRUE) |> 
+  mutate(flow_type = 'outflow',
+         datetime = as.Date(datetime))
 
 
 ## CODE FOR SAVING FUTURE INFLOW AND OUTFLOW
@@ -168,12 +174,18 @@ arrow::write_dataset(outflow_future, path = file.path(lake_directory,
 ####### 
 
 inflow_historic <- inflow_converted |> 
-  filter(datetime < forecast_date) |> 
-  mutate(flow_type = 'inflow')
+  filter(datetime < forecast_date,
+         !is.na(prediction)) |> 
+  distinct(model_id, site_id, reference_datetime, family, datetime, parameter, variable, flow_number, .keep_all = TRUE) |> 
+  mutate(flow_type = 'inflow',
+         datetime = as.Date(datetime))
 
 outflow_historic <- inflow_converted |> 
-  filter(datetime < forecast_date) |> 
-  mutate(flow_type = 'outflow')
+  filter(datetime < forecast_date,
+         !is.na(prediction)) |> 
+  distinct(model_id, site_id, reference_datetime, family, datetime, parameter, variable, flow_number, .keep_all = TRUE) |> 
+  mutate(flow_type = 'outflow',
+         datetime = as.Date(datetime))
 
 
 arrow::write_dataset(inflow_historic, path = file.path(lake_directory,
