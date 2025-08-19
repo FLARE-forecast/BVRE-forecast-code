@@ -22,14 +22,14 @@ inflow_df <- duckdbfs::open_dataset(paste0("s3://bio230121-bucket01/vera4cast/fo
                                     anonymous = TRUE) |> 
   #arrow::open_dataset(inflow_s3) |> 
   filter(model_id == 'tmwb_inflow',
-         reference_date == reference_date) |> 
+         reference_date == as.Date(reference_datetime)) |> 
   collect()
 
 prepare_historic <- inflow_df |> 
   filter(reference_datetime < as.Date(forecast_date)) |> 
-  mutate(horizon = as.numeric((as.Date(datetime) - as.Date(reference_date)))) |> 
+  mutate(horizon = as.numeric((as.Date(datetime) - as.Date(reference_datetime)))) |> 
   filter(horizon == 0) |> 
-  mutate(prediction = ifelse((variable == 'Temp_C_mean' & prediction < 0),0,prediction)) |>
+  mutate(prediction = ifelse((variable == 'Temp_C_mean' & prediction < 0),0,prediction)) #|>
   filter(reference_date >= '2025-02-01') #|> 
   # group_by(site_id, datetime, variable) |> 
   # summarise(prediction = median(prediction, na.rm = TRUE)) |>
