@@ -25,7 +25,7 @@ inflow_df_historic <- duckdbfs::open_dataset(paste0("s3://bio230121-bucket01/ver
   collect() |> 
   mutate(reference_date = as.Date(reference_datetime))
 
-inflow_df <- duckdbfs::open_dataset(paste0("s3://bio230121-bucket01/vera4cast/forecasts/parquet/project_id=vera4cast/duration=P1D/"),
+inflow_df <- duckdbfs::open_dataset(paste0("s3://bio230121-bucket01/vera4cast/forecasts/archive-parquet/project_id=vera4cast/duration=P1D/"),
                                     s3_endpoint = "amnh1.osn.mghpcc.org",
                                     anonymous = TRUE) |> 
   #arrow::open_dataset(inflow_s3) |> 
