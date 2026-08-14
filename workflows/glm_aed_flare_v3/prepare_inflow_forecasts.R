@@ -25,13 +25,20 @@ forecast_date <- config$run_config$forecast_start_datetime
  # collect() |> 
  # mutate(reference_date = as.Date(reference_datetime))
 
-inflow_df <- duckdbfs::open_dataset(paste0("s3://bio230121-bucket01/vera4cast/forecasts/bundled-parquet/project_id=vera4cast/duration=P1D/"),
-                                    s3_endpoint = "amnh1.osn.mghpcc.org",
-                                    anonymous = TRUE) |> 
+#inflow_df <- duckdbfs::open_dataset(paste0("s3://bio230121-bucket01/vera4cast/forecasts/bundled-parquet/project_id=vera4cast/duration=P1D/"),
+#                                    s3_endpoint = "amnh1.osn.mghpcc.org",
+#                                    anonymous = TRUE) |> 
   #arrow::open_dataset(inflow_s3) |> 
-  filter(model_id == 'tmwb_inflow') |>
-  collect() |> 
-  mutate(reference_date = as.Date(reference_datetime))
+ # filter(model_id == 'tmwb_inflow') |>
+#  collect() |> 
+#  mutate(reference_date = as.Date(reference_datetime))
+
+inflow_df <- arrow::open_dataset(arrow::s3_bucket("bio230121-bucket01/vera4cast/forecasts/bundled-parquet/project_id=vera4cast/duration=P1D/",
+                                                  endpoint_override = 'amnh1.osn.mghpcc.org',
+                                                  anonymous = TRUE)) |>
+     filter(model_id == 'tmwb_inflow') |>
+     collect() |>
+     mutate(reference_date = as.Date(reference_datetime))
 
 prepare_historic <- inflow_df |> 
   filter(reference_datetime < as.Date(forecast_date)) |> 
