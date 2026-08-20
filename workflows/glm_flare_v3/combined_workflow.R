@@ -2,9 +2,12 @@ library(tidyverse)
 library(lubridate)
 
 #remotes::install_github('flare-forecast/FLAREr@single-parameter')
-remotes::install_github('flare-forecast/FLAREr')
+#remotes::install_github('flare-forecast/FLAREr')
 remotes::install_github("rqthomas/GLM3r")
 Sys.setenv('GLM_PATH'='GLM3r')
+
+## set EDI API Key
+edi_access_key = Sys.getenv('EDI_ACCESS_KEY')
 
 lake_directory <- here::here()
 setwd(lake_directory)
@@ -32,11 +35,11 @@ FLAREr:::get_git_repo(lake_directory,
                      directory = config_obs$realtime_insitu_location,
                      git_repo = "https://github.com/FLARE-forecast/BVRE-data.git")
 
-get_edi_file(edi_https = "https://pasta.lternet.edu/package/data/eml/edi/725/3/a9a7ff6fe8dc20f7a8f89447d4dc2038",
+get_edi_file(edi_https = paste0("https://pasta.lternet.edu/package/data/eml/edi/725/3/a9a7ff6fe8dc20f7a8f89447d4dc2038",edi_access_key),
                      file = config_obs$insitu_obs_fname[2],
                      lake_directory)
 
-get_edi_file(edi_https = "https://pasta.lternet.edu/package/data/eml/edi/725/3/5927a50118644fa451badb3b84233bb7",
+get_edi_file(edi_https = paste0("https://pasta.lternet.edu/package/data/eml/edi/725/3/5927a50118644fa451badb3b84233bb7",edi_access_key),
                      file = config_obs$insitu_obs_fname[3],
                      lake_directory)
 
