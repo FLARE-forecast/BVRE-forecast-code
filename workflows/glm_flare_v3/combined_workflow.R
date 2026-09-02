@@ -7,7 +7,7 @@ remotes::install_github("rqthomas/GLM3r")
 Sys.setenv('GLM_PATH'='GLM3r')
 
 ## set EDI API Key
-edi_access_key = Sys.getenv('EDI_ACCESS_KEY')
+edi_access_key <- Sys.getenv('EDI_ACCESS_KEY')
 
 lake_directory <- here::here()
 setwd(lake_directory)
