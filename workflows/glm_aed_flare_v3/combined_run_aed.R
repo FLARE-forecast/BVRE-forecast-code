@@ -179,7 +179,7 @@ while(noaa_ready & inflow_ready){
     facet_wrap(~variable, scale = "free")
   
   file_name <- paste0(config$run_config$sim_name,
-                      "-",
+                      "-bvre-",
                       lubridate::as_date(vera4cast_df$reference_datetime[1]),".csv.gz")
   
   readr::write_csv(vera4cast_df, file = file_name)
