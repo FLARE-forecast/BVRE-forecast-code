@@ -169,7 +169,9 @@ while(noaa_ready & inflow_ready){
 
   vera4cast_df <- vera4cast_df |>
     filter(!(variable %in% c('DO_mgL_mean', 'Temp_C_mean'))) |>
-    bind_rows(vera4cast_df_temp_oxy)
+    bind_rows(vera4cast_df_temp_oxy) |>
+    filter(depth_m %in% c(0.1, 1.0, 1.5, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, NA)) # reduce number of depths for submission
+
   
   file_name <- paste0(config$run_config$sim_name,
                       "-bvre-",
