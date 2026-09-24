@@ -128,22 +128,13 @@ while(noaa_ready & inflow_ready){
   
   
   # Combine into a vera data frame
-  vera4cast_df <- forecast_df |>
-    dplyr::rename(depth_m = depth) |>
-    dplyr::mutate(#variable = ifelse(variable == "DO_mgL_mean", "DO_mgL_mean_all_depth", variable),
-      variable = ifelse(variable == "oxy_mean", "DO_mgL_mean", variable),
-      depth_m = ifelse(variable == "DO_mgL_mean", 1.5, depth_m),
-      datetime = ifelse(variable == "DO_mgL_mean", datetime - lubridate::days(1), datetime),
-      prediction = ifelse(variable == "DO_mgL_mean", prediction/1000*(32),prediction),
-      variable = ifelse(variable == "Temp_C_mean", "Temp_C_mean_all_depth", variable),
-      variable = ifelse(variable == "temp_1.6m_mean", "Temp_C_mean", variable),
-      depth_m = ifelse(variable == "Temp_C_mean", 1.5, depth_m),
-      datetime = ifelse(variable == "Temp_C_mean", datetime - lubridate::days(1), datetime),
+  vera4cast_df <- rerun_df |>
+    dplyr::mutate(prediction = ifelse(variable == "DO_mgL_mean", prediction/1000*(32),prediction),
       prediction = ifelse(variable == "fDOM_QSU_mean", (151.3407 + prediction)/29.62654,prediction),
       prediction = ifelse(variable == "NIT_amm", prediction/1000/0.001/(1/18.04),prediction),
       variable = ifelse(variable == "NIT_amm", "NH4_ugL_sample", variable),
       prediction = ifelse(variable == "NIT_nit", prediction/1000/0.001/(1/62.00),prediction),
-      variable = ifelse(variable == "NIT_amm", "NO3NO2_ugL_sample", variable),
+      variable = ifelse(variable == "NIT_nit", "NO3NO2_ugL_sample", variable),
       prediction = ifelse(variable == "PHS_frp", prediction/1000/0.001/(1/94.9714),prediction),
       variable = ifelse(variable == "PHS_frp", "SRP_ugL_sample", variable),
       prediction = ifelse(variable == "CAR_dic", prediction/1000/(1/52.515), prediction),
@@ -163,7 +154,7 @@ while(noaa_ready & inflow_ready){
     dplyr::bind_rows(mix_binary) |>
     dplyr::filter(variable %in% vera_variables) |>
     mutate(project_id = "vera4cast",
-           model_id = config$run_config$sim_name,
+           model_id = 'glm_aed_flare_v3',
            family = "ensemble",
            site_id = "bvre",
            duration = "P1D",
@@ -171,12 +162,14 @@ while(noaa_ready & inflow_ready){
            reference_datetime = lubridate::as_datetime(reference_datetime)) |>
     filter(datetime >= reference_datetime) |>
     distinct(reference_datetime, datetime, variable, depth_m, parameter, model_id,.keep_all = TRUE)
-  
-  vera4cast_df |>
-    filter(depth_m == 1.6 | is.na(depth_m)) |>
-    ggplot(aes(x = datetime, y = prediction, group = factor(parameter))) +
-    geom_line() +
-    facet_wrap(~variable, scale = "free")
+
+  vera4cast_df_temp_oxy <- vera4cast_df |>
+    filter(variable %in% c('DO_mgL_mean', 'Temp_C_mean'),
+           depth_m %in% c(1.5))
+
+  vera4cast_df <- vera4cast_df |>
+    filter(!(variable %in% c('DO_mgL_mean', 'Temp_C_mean'))) |>
+    bind_rows(vera4cast_df_temp_oxy)
   
   file_name <- paste0(config$run_config$sim_name,
                       "-bvre-",
