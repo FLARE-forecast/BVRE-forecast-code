@@ -129,7 +129,8 @@ while(noaa_ready & inflow_ready){
   
   # Combine into a vera data frame
   vera4cast_df <- forecast_df |>
-    dplyr::mutate(prediction = ifelse(variable == "DO_mgL_mean", prediction/1000*(32),prediction),
+      dplyr::rename(depth_m = depth) |>     
+      dplyr::mutate(prediction = ifelse(variable == "DO_mgL_mean", prediction/1000*(32),prediction),
       prediction = ifelse(variable == "fDOM_QSU_mean", (151.3407 + prediction)/29.62654,prediction),
       prediction = ifelse(variable == "NIT_amm", prediction/1000/0.001/(1/18.04),prediction),
       variable = ifelse(variable == "NIT_amm", "NH4_ugL_sample", variable),
